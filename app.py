@@ -33,10 +33,13 @@ if phone:
         dob = st.date_input("Ngày sinh (tùy chọn)")
         if st.button("Đăng ký khách mới"):
             query_db("INSERT INTO KhachHang (HoTen, NgaySinh, SoDienThoai, TongChiTieu) VALUES (?,?,?,0)", 
-                     (name, dob, phone))
-            st.success("Đăng ký thành công! Hãy nhập lại số điện thoại để tiếp tục.")
-            st.stop()
-        ma_kh = None
+             (name, dob, phone))
+            st.success("✅ Đăng ký thành công! Tiếp tục tạo đơn cho khách mới.")
+    
+            # Lấy MaKH vừa tạo
+            ma_kh = query_db("SELECT MaKH FROM KhachHang WHERE SoDienThoai=?", (phone,), fetchone=True)[0]
+        else:
+            ma_kh = None
 
     # --- Hiển thị voucher khả dụng ---
     if ma_kh:
